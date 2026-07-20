@@ -50,7 +50,7 @@ jobs:
           --requirements=python3,kivy,numpy \
           --arch=arm64-v8a \
           --dest_dir=./final-apk \
-          --android_api=31 \
+          --android_api=34 \
           --ndk-api=21 \
           --debug
 
