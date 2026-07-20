@@ -1,59 +1,19 @@
-name: Build Android APK
+[app]
 
-on:
-  push:
-    branches: [ main ]
+title = IABasica
+package.name = iabasica
+package.domain = org.ia
+version = 0.1
+source.dir = .
+source.include_exts = py,png,jpg,kv,atlas
+requirements = python3,kivy,numpy,scikit-learn,scipy
+orientation = portrait
+fullscreen = 0
+android.permissions = INTERNET
+android.api = 31
+android.minapi = 21
+android.ndk = 25b
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          python3-pip \
-          build-essential \
-          git \
-          ffmpeg \
-          libsdl2-dev \
-          libsdl2-image-dev \
-          libsdl2-mixer-dev \
-          libsdl2-ttf-dev \
-          libportmidi-dev \
-          libswscale-dev \
-          libavformat-dev \
-          libavcodec-dev \
-          zlib1g-dev \
-          libffi-dev \
-          libssl-dev \
-          autoconf \
-          libtool \
-          pkg-config \
-          unzip \
-          zip \
-          openjdk-17-jdk
-
-    - name: Install Buildozer and Cython
-      run: |
-        pip install --upgrade pip
-        pip install cython==0.29.36 buildozer
-
-    - name: Build APK with Buildozer
-      run: |
-        buildozer -v android debug
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: package
-        path: bin/*.apk
+[buildozer]
+log_level = 2
+warn_on_root = 1
