@@ -35,29 +35,14 @@ jobs:
           openjdk-17-jdk \
           ant
 
-    - name: Install python-for-android and Cython
+    - name: Install Buildozer and Dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install cython==0.29.36 python-for-android
+        python -m pip install cython==0.29.36 buildozer
 
-    - name: Build APK with p4a
+    - name: Build APK with Buildozer
       run: |
-        python -m pythonforandroid.toolchain create \
-          --name="IABasica" \
-          --package=org.ia.iabasica \
-          --version=0.1 \
-          --bootstrap=sdl2 \
-          --requirements=python3,kivy,numpy,cython \
-          --arch=arm64-v8a \
-          --dest_dir=./final-apk \
-          --android_api=34 \
-          --ndk-api=24 \
-          --debug
-
-    - name: Find and Move APK
-      run: |
-        mkdir -p bin
-        find ./final-apk -name "*.apk" -exec cp {} bin/ \;
+        buildozer -v android debug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
