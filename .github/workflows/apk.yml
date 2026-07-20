@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout code
@@ -62,10 +62,6 @@ jobs:
         yes | sdkmanager --licenses --sdk_root=/home/runner/.buildozer/android/platform/android-sdk || true
 
     - name: Build APK with Buildozer
-      env:
-        ANDROID_NDK: ""
-        ANDROID_NDK_HOME: ""
-        ANDROID_NDK_ROOT: ""
       run: |
         buildozer -v android debug
 
