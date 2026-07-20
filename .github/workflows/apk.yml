@@ -49,10 +49,13 @@ jobs:
         pip install cython==0.29.36 buildozer
 
     - name: Build APK with Buildozer
-      env:
-        BUILDER_ACCEPT_LICENSES: "1"
       run: |
-        buildozer -v android debug || (cat ~/.buildozer/android/platform/build.log && exit 1)
+        # Pre-creamos las carpetas para inyectar la aceptación de licencias de Android SDK
+        mkdir -p ~/.android
+        echo "### License accepted" > ~/.android/repositories.cfg
+        
+        # Ejecutamos buildozer normalmente ya que con el repositorio configurado no pedirá licencias
+        buildozer -v android debug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
