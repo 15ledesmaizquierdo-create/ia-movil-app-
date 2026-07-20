@@ -48,17 +48,22 @@ jobs:
         pip install --upgrade pip
         pip install cython==0.29.36 buildozer
 
-    - name: Force Install Stable Android SDK Build-Tools
+    - name: Setup Android SDK and Command-Line Tools
       run: |
         mkdir -p ~/android-sdk/cmdline-tools
         wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
         unzip -q cmdline-tools.zip -d ~/android-sdk/cmdline-tools
         mv ~/android-sdk/cmdline-tools/cmdline-tools ~/android-sdk/cmdline-tools/latest
         
-        # Aceptar licencias e instalar build-tools 33.0.2 y platform-tools de forma manual
+        # Crear la estructura de carpetas que Buildozer busca internamente
+        mkdir -p /home/runner/.buildozer/android/platform/android-sdk/tools/bin
+        
+        # Enlazar el sdkmanager descargado hacia donde Buildozer lo buscará
+        ln -s ~/android-sdk/cmdline-tools/latest/bin/sdkmanager /home/runner/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+        
+        # Aceptar licencias previas
         export PATH=$PATH:~/android-sdk/cmdline-tools/latest/bin
         yes | sdkmanager --licenses --sdk_root=/home/runner/.buildozer/android/platform/android-sdk || true
-        sdkmanager --sdk_root=/home/runner/.buildozer/android/platform/android-sdk "platform-tools" "build-tools;33.0.2" "platforms;android-31"
 
     - name: Build APK with Buildozer
       run: |
